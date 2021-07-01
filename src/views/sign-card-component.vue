@@ -35,13 +35,25 @@
           </form>
         </div>
         <div class="card-container">
-          <div class="card">
-            <img
-              :src="require(`@/assets/images/card-${currentCard}.jpg`)"
-              alt
-              class="card-img"
-            />
-          </div>
+          <Carousel :settings="carouselSettings">
+            <Slide v-for="(page, index) in carouselPages" :key="page">
+              <div class="carousel__item">
+                <img
+                  :src="page"
+                  alt="card img"
+                  class="card-img"
+                  v-bind:class="{
+                    'last-page': index == carouselPages.length - 1,
+                  }"
+                />
+              </div>
+            </Slide>
+
+            <template #addons>
+              <Pagination />
+              <Navigation />
+            </template>
+          </Carousel>
         </div>
       </div>
     </div>
@@ -51,9 +63,18 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
+
 @Options({
   props: {
     msg: String,
+  },
+  components: {
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
   },
 })
 export default class SignCardComponent extends Vue {
@@ -62,16 +83,28 @@ export default class SignCardComponent extends Vue {
   name: string = "";
   message: string = "";
   finishedSigning: boolean = false;
-
   errors: string[] = [];
 
+  carouselPages: string[] = [];
+
+  carouselSettings = {
+    itemsToShow: 1,
+    snapAlign: "center",
+  };
+
   created() {
-    console.log(this.$route.params.id);
     this.currentCard = this.$route.params.id;
+
+    this.carouselPages = [
+      require(`@/assets/images/card-${this.currentCard}.jpg`),
+      require("@/assets/images/blank-page.jpg"),
+    ];
   }
 
   checkForm(e: Event) {
     if (this.name && this.message) {
+      // sign the card
+      this.signCard();
       return true;
     }
 
@@ -86,6 +119,8 @@ export default class SignCardComponent extends Vue {
 
     e.preventDefault();
   }
+
+  signCard() {}
 }
 </script>
 
@@ -97,5 +132,9 @@ export default class SignCardComponent extends Vue {
 
 .input-container {
   flex: 2;
+}
+
+.carousel {
+  width: 500px;
 }
 </style>
