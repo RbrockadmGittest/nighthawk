@@ -12,3 +12,14 @@ li {
 a {
   color: #42b983;
 }
+
+button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  color: #333;
+  background-color:#fff;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: Arial;
+  cursor: pointer;
+  }
