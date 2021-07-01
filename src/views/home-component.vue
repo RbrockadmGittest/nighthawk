@@ -41,4 +41,14 @@ export default class HomeComponent extends Vue {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<!--<style scoped></style>-->
+<style scoped>
+.content-container {
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+}
+</style>
