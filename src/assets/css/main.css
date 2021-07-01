@@ -9,7 +9,7 @@
   --color-black-3: #444;
   --speed-normal: 0.5s;
   --speed-fast: 0.8s;
-  --card-width: 250px;
+  --card-width: 440px;
 }
 
 * {
@@ -48,17 +48,15 @@ body {
 }
 
 .card {
-  height: 400px;
-  width: var(--card-width);
-  background-color: green;
   margin-bottom: 30px;
 }
 
-.choose-button {
-  height: 50px;
+.card-img {
+  height: 550px;
+  width: var(--card-width);
 }
 
-.choose-button {
+.primary-button {
   position: relative;
   width: var(--card-width);
   height: 60px;
@@ -74,7 +72,7 @@ body {
   font-size: 16px;
 }
 
-.choose-button:hover {
+.primary-button:hover {
   border: 1px solid transparent;
   background: var(--color-red) url(https://i.postimg.cc/wBXGXbWN/pixel.png);
   transition-delay: 0.8s;
@@ -104,6 +102,15 @@ body {
 
 .input-group {
   margin-bottom: 30px;
+}
+
+.form-errors {
+  margin-bottom: 20px;
+}
+
+.textarea {
+  width: 500px;
+  height: 150px;
 }
 
 @keyframes animate {

@@ -6,15 +6,27 @@
       <h3 class="subtitle">The easiest way to send a card.</h3>
       <div class="cards-container">
         <div class="card-container">
-          <div class="card"></div>
-          <button v-on:click="chooseCard(1)" class="choose-button">
+          <div class="card">
+            <img
+              :src="require(`@/assets/images/card-1.jpg`)"
+              alt
+              class="card-img"
+            />
+          </div>
+          <button v-on:click="chooseCard(1)" class="primary-button">
             choose
           </button>
         </div>
 
         <div class="card-container">
-          <div class="card"></div>
-          <button v-on:click="chooseCard(2)" class="choose-button">
+          <div class="card">
+            <img
+              :src="require(`@/assets/images/card-2.jpg`)"
+              alt
+              class="card-img"
+            />
+          </div>
+          <button v-on:click="chooseCard(2)" class="primary-button">
             choose
           </button>
         </div>
@@ -35,7 +47,7 @@ export default class HomeComponent extends Vue {
   msg!: string;
 
   chooseCard(cardNumber: number) {
-    this.$router.replace({ name: "Card", params: { id: cardNumber } });
+    this.$router.replace({ name: "CardCreation", params: { id: cardNumber } });
   }
 }
 </script>
