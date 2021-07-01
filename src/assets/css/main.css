@@ -114,6 +114,11 @@ body {
   height: 150px;
 }
 
+.dynamically-added-text {
+  position: absolute;
+  left: 0;
+}
+
 @keyframes animate {
   0% {
     background-position-y: 0;

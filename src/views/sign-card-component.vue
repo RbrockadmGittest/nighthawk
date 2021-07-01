@@ -35,17 +35,15 @@
           </form>
         </div>
         <div class="card-container">
-          <Carousel :settings="carouselSettings">
+          <Carousel id="carousel" :settings="carouselSettings">
             <Slide v-for="(page, index) in carouselPages" :key="page">
-              <div class="carousel__item">
-                <img
-                  :src="page"
-                  alt="card img"
-                  class="card-img"
-                  v-bind:class="{
-                    'last-page': index == carouselPages.length - 1,
-                  }"
-                />
+              <div
+                class="carousel__item"
+                v-bind:class="{
+                  'last-page': index == carouselPages.length - 1,
+                }"
+              >
+                <img :src="page" alt="card img" class="card-img" />
               </div>
             </Slide>
 
@@ -105,7 +103,7 @@ export default class SignCardComponent extends Vue {
     if (this.name && this.message) {
       // sign the card
       this.signCard();
-      return true;
+      e.preventDefault();
     }
 
     this.errors = [];
@@ -120,7 +118,32 @@ export default class SignCardComponent extends Vue {
     e.preventDefault();
   }
 
-  signCard() {}
+  signCard() {
+    const lastPageDiv = document.getElementsByClassName("last-page")[0];
+    const previousText = document.getElementById("dynamically-added-text");
+
+    if (previousText) {
+      previousText.remove();
+    }
+
+    const spanElement = document.createElement("span");
+    spanElement.setAttribute("id", "dynamically-added-text");
+    spanElement.setAttribute("class", "dynamically-added-text");
+    const content = document.createTextNode(this.message + " " + this.name);
+    lastPageDiv.appendChild(spanElement);
+    spanElement.appendChild(content);
+
+    this.goToLastPage();
+  }
+
+  goToLastPage() {
+    const paginationIdenitier = "carousel__pagination-button";
+    const paginationItems =
+      document.getElementsByClassName(paginationIdenitier);
+    const lastPaginationItem = paginationItems[paginationItems.length - 1];
+
+    lastPaginationItem.dispatchEvent(new Event("click"));
+  }
 }
 </script>
 
@@ -136,5 +159,9 @@ export default class SignCardComponent extends Vue {
 
 .carousel {
   width: 500px;
+}
+
+.carousel__item {
+  position: relative;
 }
 </style>
