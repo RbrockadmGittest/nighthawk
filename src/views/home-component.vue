@@ -13,7 +13,7 @@
               class="card-img"
             />
           </div>
-          <button v-on:click="chooseCard(1)" class="primary-button">
+          <button v-on:click="chooseCard(1)" class="button primary-button">
             choose
           </button>
         </div>
@@ -26,7 +26,7 @@
               class="card-img"
             />
           </div>
-          <button v-on:click="chooseCard(2)" class="primary-button">
+          <button v-on:click="chooseCard(2)" class="button primary-button">
             choose
           </button>
         </div>

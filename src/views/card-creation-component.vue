@@ -32,7 +32,9 @@
             </div>
 
             <div class="input-group">
-              <button type="submit" class="primary-button">Create Card</button>
+              <button type="submit" class="button primary-button">
+                Create Card
+              </button>
             </div>
           </form>
         </div>

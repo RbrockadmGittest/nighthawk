@@ -5,7 +5,7 @@
       <h3 class="subtitle">GET SIGNING PUNK!</h3>
       <div class="signing-section">
         <div class="input-container">
-          <form @submit="checkForm">
+          <form @submit="submitForm">
             <div class="form-errors" v-if="errors.length">
               <b>Please correct the following error(s):</b>
               <ul>
@@ -27,9 +27,17 @@
               />
             </div>
 
-            <div class="input-group">
-              <button type="submit" class="primary-button">
-                Sign the Card
+            <div class="button-group">
+              <button @click="signCard" class="button secondary-button">
+                Sign Me
+              </button>
+
+              <button
+                type="submit"
+                :disabled="!signed"
+                class="button primary-button"
+              >
+                Save Me
               </button>
             </div>
           </form>
@@ -82,6 +90,7 @@ export default class SignCardComponent extends Vue {
   message: string = "";
   finishedSigning: boolean = false;
   errors: string[] = [];
+  signed = false;
 
   carouselPages: string[] = [];
 
@@ -99,14 +108,22 @@ export default class SignCardComponent extends Vue {
     ];
   }
 
-  checkForm(e: Event) {
-    if (this.name && this.message) {
-      // sign the card
-      this.signCard();
-      e.preventDefault();
+  submitForm(e: Event) {
+    e.preventDefault();
+
+    if (!this.checkForm()) {
+      return;
     }
 
+    // TODO: Submit data to backend
+  }
+
+  checkForm() {
     this.errors = [];
+
+    if (this.name && this.message) {
+      return true;
+    }
 
     if (!this.name) {
       this.errors.push("Name required.");
@@ -115,10 +132,14 @@ export default class SignCardComponent extends Vue {
       this.errors.push("message required.");
     }
 
-    e.preventDefault();
+    return false;
   }
 
   signCard() {
+    if (!this.checkForm()) {
+      return;
+    }
+
     const lastPageDiv = document.getElementsByClassName("last-page")[0];
     const previousText = document.getElementById("dynamically-added-text");
 
@@ -129,11 +150,19 @@ export default class SignCardComponent extends Vue {
     const spanElement = document.createElement("span");
     spanElement.setAttribute("id", "dynamically-added-text");
     spanElement.setAttribute("class", "dynamically-added-text");
-    const content = document.createTextNode(this.message + " " + this.name);
+
+    const messageNode = document.createTextNode(this.message);
+    const nameNode = document.createTextNode(this.name);
+    const linebreak = document.createElement("br");
+
     lastPageDiv.appendChild(spanElement);
-    spanElement.appendChild(content);
+    spanElement.appendChild(messageNode);
+    spanElement.appendChild(linebreak);
+    spanElement.appendChild(nameNode);
 
     this.goToLastPage();
+
+    this.signed = true;
   }
 
   goToLastPage() {
