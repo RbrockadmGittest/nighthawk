@@ -2,7 +2,7 @@
   <div class="page">
     <h1>NIGHTHAWK</h1>
     <div class="content-container">
-      <h3 class="subtitle">Here is your card: {{ currentCard }}</h3>
+      <!-- <h3 class="subtitle">Here is your card: {{ currentCard }}</h3> -->
       <div class="signing-section">
         <div class="input-container">
           <form @submit="checkForm">
@@ -32,7 +32,7 @@
             </div>
 
             <div class="input-group">
-              <button @click="createCard" class="button primary-button">
+              <button @click="checkForm" class="button primary-button">
                 Create Card
               </button>
             </div>
@@ -80,26 +80,27 @@ export default class CardCreationComponent extends Vue {
     let data = {
       cardName: this.currentCard,
       recipientName: this.recipientName,
-      recipientEmail: this.recipientEmail
+      recipientEmail: this.recipientEmail,
     };
-
-    GreetingCardData.create(data)
-        .then(response => {
-          this.greetingCardId = response.data.id;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+    return GreetingCardData.create(data);
   }
 
   checkForm(e: Event) {
     if (this.recipientName && this.recipientEmail) {
-      this.$router.replace({
-        name: "SignCard",
-        params: { id: this.currentCard },
-      });
-      return true;
+      this.createCard()
+        .then((response) => {
+          this.greetingCardId = response.data.id;
+          console.log(response.data);
+          this.$router.replace({
+            name: "SignCard",
+            params: { id: this.greetingCardId, template: this.currentCard },
+          });
+          return true;
+        })
+        .catch((e) => {
+          console.log(e);
+          return false;
+        });
     }
 
     this.errors = [];

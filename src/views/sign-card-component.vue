@@ -3,6 +3,12 @@
     <h1>NIGHTHAWK</h1>
     <div class="content-container">
       <h3 class="subtitle">GET SIGNING PUNK!</h3>
+      <h3 class="subtitle">
+        You unique greeting card URL:
+        <router-link :to="`/card/${greetingCardId}`">
+          http://localhost:8080/card/{{ greetingCardId }}
+        </router-link>
+      </h3>
       <div class="signing-section">
         <div class="input-container">
           <form @submit="submitForm">
@@ -33,7 +39,7 @@
               </button>
 
               <button
-                type="submit"
+                @click="confirmation"
                 :disabled="!signed"
                 class="button primary-button"
               >
@@ -72,6 +78,8 @@ import { Options, Vue } from "vue-class-component";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 
+import GreetingCardData from "../services/greeting-card-data";
+
 @Options({
   props: {
     msg: String,
@@ -84,6 +92,7 @@ import "vue3-carousel/dist/carousel.css";
   },
 })
 export default class SignCardComponent extends Vue {
+  greetingCardId: any = "";
   msg!: string;
   currentCard: any;
   name: string = "";
@@ -100,8 +109,8 @@ export default class SignCardComponent extends Vue {
   };
 
   created() {
-    this.currentCard = this.$route.params.id;
-
+    this.greetingCardId = this.$route.params.id;
+    this.currentCard = this.$route.params.template;
     this.carouselPages = [
       require(`@/assets/images/card-${this.currentCard}.jpg`),
       require("@/assets/images/blank-page.jpg"),
@@ -140,6 +149,18 @@ export default class SignCardComponent extends Vue {
       return;
     }
 
+    let data = {
+      senderName: this.name,
+      greetingMessage: this.message,
+    };
+
+    GreetingCardData.update(this.greetingCardId, data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     const lastPageDiv = document.getElementsByClassName("last-page")[0];
     const previousText = document.getElementById("dynamically-added-text");
 
@@ -163,6 +184,13 @@ export default class SignCardComponent extends Vue {
     this.goToLastPage();
 
     this.signed = true;
+  }
+
+  confirmation() {
+    this.$router.replace({
+      name: "Confirmation",
+      params: { id: this.greetingCardId, template: this.currentCard }
+    });
   }
 
   goToLastPage() {
