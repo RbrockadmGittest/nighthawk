@@ -32,7 +32,7 @@
             </div>
 
             <div class="input-group">
-              <button type="submit" class="button primary-button">
+              <button @click="createCard" class="button primary-button">
                 Create Card
               </button>
             </div>
@@ -54,6 +54,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import GreetingCardData from "../services/greeting-card-data";
 
 @Options({
   props: {
@@ -61,6 +62,7 @@ import { Options, Vue } from "vue-class-component";
   },
 })
 export default class CardCreationComponent extends Vue {
+  greetingCardId: string = "";
   msg!: string;
   currentCard: any;
   recipientName: string = "";
@@ -72,6 +74,23 @@ export default class CardCreationComponent extends Vue {
   created() {
     console.log(this.$route.params.id);
     this.currentCard = this.$route.params.id;
+  }
+
+  createCard() {
+    let data = {
+      cardName: this.currentCard,
+      recipientName: this.recipientName,
+      recipientEmail: this.recipientEmail
+    };
+
+    GreetingCardData.create(data)
+        .then(response => {
+          this.greetingCardId = response.data.id;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
   }
 
   checkForm(e: Event) {
