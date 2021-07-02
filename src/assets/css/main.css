@@ -38,7 +38,7 @@ body {
 
 .cards-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   flex-direction: row;
 }
 
