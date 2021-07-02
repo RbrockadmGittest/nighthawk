@@ -5,8 +5,8 @@
       <h3 class="subtitle">GET SIGNING PUNK!</h3>
       <h3 class="subtitle">
         You unique greeting card URL:
-        <router-link :to="`/card/${greetingCardId}`">
-          http://localhost:8080/card/{{ greetingCardId }}
+        <router-link :to="`/card/${greetingCardId}/${currentCard}`">
+          http://localhost:8080/card/{{ greetingCardId }}/{{currentCard}}
         </router-link>
       </h3>
       <div class="signing-section">

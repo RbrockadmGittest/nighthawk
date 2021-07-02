@@ -4,8 +4,9 @@ module.exports = mongoose => {
             cardName: String,
             recipientName: String,
             recepientEmail: String,
-            senderName: String,
-            greetingMessage: String
+            // senderName: String,
+            // greetingMessage: String
+            greetings: { type : Array }
         },
         { timestamps: true }
     );

@@ -50,9 +50,8 @@ import GreetingCardData from "../services/greeting-card-data";
 export default class ViewCardComponent extends Vue {
   greetingCardId: any = "";
   currentCard: any;
-  name: string = "";
   recipientName: string = "";
-  message: string = "";
+  greetings: any;
   carouselPages: string[] = [];
 
   carouselSettings = {
@@ -71,34 +70,45 @@ export default class ViewCardComponent extends Vue {
   }
 
   showMessages() {
-
     GreetingCardData.get(this.greetingCardId)
       .then((response) => {
         console.log(response.data);
-        this.message = response.data.greetingMessage;
-        this.name = response.data.senderName;
+        this.greetings = response.data.greetings;
         this.recipientName = response.data.recipientName;
         const lastPageDiv = document.getElementsByClassName("last-page")[0];
-        const previousText = document.getElementById("dynamically-added-text");
+        // const previousText = document.getElementById("dynamically-added-text");
 
-        if (previousText) {
-          previousText.remove();
-        }
+        // if (previousText) {
+        //   previousText.remove();
+        // }
 
+        // let data = [
+        //   {
+        //     name: "Yo",
+        //     message: "Sushi",
+        //   },
+        //   {
+        //     name: "Yello",
+        //     message: "HDB",
+        //   },
+        // ];
         const spanElement = document.createElement("span");
-        spanElement.setAttribute("id", "dynamically-added-text");
-        spanElement.setAttribute("class", "dynamically-added-text");
+          spanElement.setAttribute("id", "dynamically-added-text");
+          spanElement.setAttribute("class", "dynamically-added-text");
 
-        const messageNode = document.createTextNode(this.message);
-        const nameNode = document.createTextNode(this.name);
-        const linebreak = document.createElement("br");
+        for (let greeting of this.greetings) {
+          
 
-        lastPageDiv.appendChild(spanElement);
-        spanElement.appendChild(messageNode);
-        spanElement.appendChild(linebreak);
-        spanElement.appendChild(nameNode);
-
-        // this.goToLastPage();
+          const messageNode = document.createTextNode(greeting.senderName);
+          const nameNode = document.createTextNode("  -  " + greeting.greetingMessage);
+          const linebreak = document.createElement("br");
+          spanElement.appendChild(messageNode);
+          spanElement.appendChild(linebreak);
+          spanElement.appendChild(nameNode);
+          spanElement.appendChild(linebreak);
+          spanElement.appendChild(linebreak);
+        }
+          lastPageDiv.appendChild(spanElement);
       })
       .catch((e) => {
         console.log(e);

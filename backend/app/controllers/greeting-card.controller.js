@@ -74,7 +74,10 @@ exports.update = (req, res) => {
 
     const id = req.params.id;
 
-    GreetingCard.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    // GreetingCard.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    GreetingCard.findByIdAndUpdate(id, 
+        {$push: { "greetings": { senderName: req.body.senderName, greetingMessage: req.body.greetingMessage}}},
+        {safe: true, new: true, useFindAndModify: true})
         .then(data => {
             if (!data) {
                 res.status(404).send({
